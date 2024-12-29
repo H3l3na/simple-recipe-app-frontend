@@ -2,6 +2,7 @@ import React from 'react';
 import { Recipe } from '../../types';
 import { useMutation } from 'react-query';
 import { addToFavorites } from '../../services/recipeService';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   recipe: Recipe;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const RecipeCard: React.FC<Props> = ({ recipe, showButton = true }) => {
+    const navigate = useNavigate();
 
     const { mutate } = useMutation(
         (recipeId: number) => addToFavorites(1, recipeId), // Call the service method
@@ -25,7 +27,11 @@ const RecipeCard: React.FC<Props> = ({ recipe, showButton = true }) => {
     );
 
     const handleAddToFavorites = () => {
-        mutate(recipe.recipeId); // Call the mutate function with recipeId
+        recipe?.recipeId && mutate(recipe.recipeId); // Call the mutate function with recipeId
+      };
+
+    const handleViewDetails = () => {
+        navigate(`/recipe/${recipe.recipeId}`); // Navigate to the recipe details page
       };
 
     return (
@@ -34,6 +40,7 @@ const RecipeCard: React.FC<Props> = ({ recipe, showButton = true }) => {
         <p>{'Prep time: ' + recipe.cookingTime + ' min'}</p>
         <p>{'Difficulty level: ' + recipe.difficultyLevel}</p>
         {showButton && <button onClick={handleAddToFavorites}>Favorite</button> }
+        <button onClick={handleViewDetails}>View Details</button>
       </article>
     );
   };

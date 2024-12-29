@@ -181,3 +181,49 @@ body {
       grid-template-columns: 1fr;
     }
   }
+
+  .new-recipe-container {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  /* New Recipe Button Styling */
+  .new-recipe-button {
+    padding: 12px 25px;
+    font-size: 1.2rem;
+    background-color: #4CAF50; /* A pleasant green for "Create New" */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .new-recipe-button:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
+  }
+  
+  .new-recipe-button:focus {
+    outline: none;
+  }
+
+  /* Filter Dropdown Styles */
+.filter-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .difficulty-filter {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+  }
+  
+  .difficulty-filter:hover {
+    border-color: #ff6f61;
+  }
+  

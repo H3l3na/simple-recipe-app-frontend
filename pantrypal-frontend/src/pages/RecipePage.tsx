@@ -6,7 +6,7 @@ const RecipePage: React.FC = () => {
   return (
     <main className="recipe-page">
       <h1 className="recipe-page-title">All Recipes</h1>
-      <RecipeList />
+      <RecipeList difficultyFilter=''/>
     </main>
   );
 };
