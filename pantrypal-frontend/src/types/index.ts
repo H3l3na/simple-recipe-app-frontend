@@ -1,6 +1,6 @@
 export interface Recipe {
-    id: number;
-    name: string;
-    description: string;
+    recipeId: number;
+    recipeName: string;
+    cookingTime: string;
+    difficultyLevel: string;
   }
-  
