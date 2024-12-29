@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'; 
-import { getRecipeById } from '../../services/recipeService'; 
+import { useNavigate, useParams } from 'react-router-dom';
+import { getRecipeById } from '../../services/recipeService';
 import { Recipe } from '../../types';
+import "../../styles/recipedetails.css"; // Add the CSS import
 
 interface RecipeDetailsProps {}
 
 const RecipeDetails: React.FC<RecipeDetailsProps> = () => {
-  const { recipeId } = useParams<{ recipeId: string }>(); // Get recipeId from URL
+  const { recipeId } = useParams<{ recipeId: string }>();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!recipeId) {
-        // If recipeId is not available, navigate to a fallback page (e.g., homepage)
-        navigate('/');
-        return;
-      }
+      navigate('/');
+      return;
+    }
 
     const fetchRecipe = async () => {
       try {
-        const fetchedRecipe = await getRecipeById(parseInt(recipeId));
-        setRecipe(fetchedRecipe);
+        if (recipeId){
+            const fetchedRecipe = await getRecipeById(parseInt(recipeId));
+            setRecipe(fetchedRecipe);
+        }
       } catch (error) {
         console.error('Error fetching recipe details:', error);
       }
@@ -31,10 +33,26 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = () => {
   if (!recipe) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h1>{recipe.recipeName}</h1>
-      <p>{'Prep time: ' + recipe.cookingTime + ' min'}</p>
-      <p>{'Difficulty level: ' + recipe.difficultyLevel}</p>
+    <div className="recipe-details-container">
+      <h1 className="recipe-title">{recipe.recipeName}</h1>
+      <div className="recipe-header">
+        <p className="recipe-time">Prep time: {recipe.cookingTime} min</p>
+        <p className="recipe-difficulty">Difficulty level: {recipe.difficultyLevel}</p>
+      </div>
+      <div className="ingredients-section">
+        <h2>Ingredients</h2>
+        <ul className="ingredient-list">
+          {recipe.ingredients.map((ingredient, index) => (
+            <li key={index} className="ingredient-item">
+              <strong>{ingredient.name}:</strong> {ingredient.quantity}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="instructions-section">
+        <h2>Preparation Steps</h2>
+        <p>{recipe.preparationSteps}</p>
+      </div>
     </div>
   );
 };

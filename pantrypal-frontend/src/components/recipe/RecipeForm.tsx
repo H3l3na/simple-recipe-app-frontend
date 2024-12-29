@@ -6,7 +6,9 @@ const RecipeForm: React.FC = () => {
   const [newRecipeData, setNewRecipeData] = useState<Recipe>({
     recipeName: '',
     cookingTime: '0',
-    difficultyLevel: ''
+    difficultyLevel: '',
+    preparationSteps: '',
+    ingredients: []
   });
 
   const handleCreateRecipe = async () => {
