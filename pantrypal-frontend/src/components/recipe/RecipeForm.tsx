@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Recipe } from '../../types';
 import { createRecipe } from '../../services/recipeService';
+import '../../styles/recipeform.css'; // Importing the CSS file
 
 const RecipeForm: React.FC = () => {
   const [newRecipeData, setNewRecipeData] = useState<Recipe>({
@@ -28,42 +29,53 @@ const RecipeForm: React.FC = () => {
     }));
   };
 
-
-   return (
-        <div className="create-recipe-form">
-          <h2>Create a New Recipe</h2>
-          <form>
-            <input
-              type="text"
-              name="recipeName"
-              placeholder="Recipe Name"
-              value={newRecipeData.recipeName}
-              onChange={handleInputChange}
-            />
-            <input
-              type="text"
-              name="difficultyLevel"
-              placeholder="Difficulty Level"
-              value={newRecipeData.difficultyLevel}
-              onChange={handleInputChange}
-            />
-            <input
-              type="number"
-              name="cookingTime"
-              placeholder="Cooking Time (min)"
-              value={newRecipeData.cookingTime}
-              onChange={handleInputChange}
-            />
-            <button
-              type="button"
-              onClick={handleCreateRecipe}
-              className="new-recipe-button"
-            >
-              Submit Recipe
-            </button>
-          </form>
+  return (
+    <div className="create-recipe-form">
+      <h2>Create a New Recipe</h2>
+      <form>
+        <div className="form-group">
+          <label htmlFor="recipeName">Recipe Name</label>
+          <input
+            id="recipeName"
+            type="text"
+            name="recipeName"
+            placeholder="Enter recipe name"
+            value={newRecipeData.recipeName}
+            onChange={handleInputChange}
+          />
         </div>
-      )
+        <div className="form-group">
+          <label htmlFor="difficultyLevel">Difficulty Level</label>
+          <input
+            id="difficultyLevel"
+            type="text"
+            name="difficultyLevel"
+            placeholder="Enter difficulty level"
+            value={newRecipeData.difficultyLevel}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="cookingTime">Cooking Time (min)</label>
+          <input
+            id="cookingTime"
+            type="number"
+            name="cookingTime"
+            placeholder="Enter cooking time in minutes"
+            value={newRecipeData.cookingTime}
+            onChange={handleInputChange}
+          />
+        </div>
+        <button
+          type="button"
+          onClick={handleCreateRecipe}
+          className="new-recipe-button"
+        >
+          Submit Recipe
+        </button>
+      </form>
+    </div>
+  );
 };
 
 export default RecipeForm;
