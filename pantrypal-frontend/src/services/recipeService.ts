@@ -25,3 +25,8 @@ export const addToFavorites = async (userId: number, recipeId: number): Promise<
     const response = await api.post(`/users/${userId}/favorite`, { recipeId });
     return response.data;  
   };
+
+export const deleteRecipe = async (recipeId: number): Promise<void> => {
+    const response = await api.delete(`/recipes/${recipeId}`);
+    return response.data;
+  };

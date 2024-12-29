@@ -226,4 +226,9 @@ body {
   .difficulty-filter:hover {
     border-color: #ff6f61;
   }
+
+  .recipe-title-container {
+    display: flex;
+    justify-content: space-between;
+  }
   
