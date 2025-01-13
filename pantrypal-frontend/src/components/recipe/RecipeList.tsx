@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import { fetchAllRecipes } from '../../services/recipeService';
+import { fetchAllRecipes, fetchMyRecipes } from '../../services/recipeService';
 import RecipeCard from './RecipeCard';
 import { Recipe } from '../../types';
 
@@ -18,6 +18,25 @@ const RecipeList: React.FC<RecipeListProps> = ({
   cuisineFilter,
 }) => {
   const { data: recipes, isLoading, error } = useQuery<Recipe[]>(['recipes'], fetchAllRecipes);
+  const { data: favoriteRecipes = [], isLoading: isFavoritesLoading, error: favoritesError } = useQuery<Recipe[]>(
+    ['favoriteRecipes', 1], 
+    () => fetchMyRecipes(1)
+  );
+  const [localFavorites, setLocalFavorites] = useState<Recipe[]>([]);
+  
+  useEffect(() => {
+    if (favoriteRecipes.length > 0) {
+      setLocalFavorites(favoriteRecipes);
+    }
+  }, [favoriteRecipes]);
+
+  const handleToggleFavorite = (recipeId: number) => {
+    setLocalFavorites((prev) =>
+      prev.some((fav) => fav.recipeId === recipeId)
+        ? prev.filter((fav) => fav.recipeId !== recipeId) // Remove from favorites
+        : [...prev, recipes?.find((recipe) => recipe.recipeId === recipeId)!] // Add to favorites
+    );
+  };
 
   const filteredRecipes = recipes?.filter((recipe) => {
     const matchesName = nameFilter
@@ -45,9 +64,19 @@ const RecipeList: React.FC<RecipeListProps> = ({
   return (
     <section>
       {filteredRecipes && filteredRecipes.length > 0 ? (
-        filteredRecipes.map((recipe: Recipe) => (
-          <RecipeCard key={recipe.recipeId} recipe={recipe} />
-        ))
+        filteredRecipes.map((recipe: Recipe) => {
+          const isFavorite = localFavorites.some(
+            (favRecipe) => favRecipe.recipeId === recipe.recipeId
+          );
+          return (
+            <RecipeCard
+            key={recipe.recipeId}
+            recipe={recipe}
+            favoriteRecipe={isFavorite}
+            onToggleFavorite={handleToggleFavorite}
+          />
+          );
+        })
       ) : (
         <p>No recipes match your filters.</p>
       )}

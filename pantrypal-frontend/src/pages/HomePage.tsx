@@ -81,7 +81,7 @@ const HomePage: React.FC = () => {
         </button>
       </div>
 
-      {isCreateRecipeFormOpen && <RecipeForm />}
+      {isCreateRecipeFormOpen && <RecipeForm onClose={setIsCreateRecipeFormOpen}/>}
 
       <RecipeList
         nameFilter={nameFilter}

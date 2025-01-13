@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import { Snackbar, Alert } from '@mui/material';
 import { Recipe, Ingredient } from '../../types';
 import { createRecipe } from '../../services/recipeService';
 
-const RecipeForm: React.FC = () => {
+interface RecipeFormProps {
+  onClose: (open: boolean) => void;
+}
+
+const RecipeForm: React.FC<RecipeFormProps> = ({ onClose }) => {
   const [newRecipeData, setNewRecipeData] = useState<Recipe>({
     recipeName: '',
     cookingTime: '0',
@@ -10,6 +15,8 @@ const RecipeForm: React.FC = () => {
     preparationSteps: '',
     ingredients: [],
   });
+
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const [newIngredient, setNewIngredient] = useState<Ingredient>({
     name: '',
@@ -20,9 +27,18 @@ const RecipeForm: React.FC = () => {
     try {
       const createdRecipe = await createRecipe(newRecipeData);
       console.log('Recipe created:', createdRecipe);
+      setSuccessMessage('Recipe submitted successfully!');
+      setTimeout(() => {
+        setSuccessMessage(null);
+        onClose(false); 
+      }, 2000); 
     } catch (error) {
       console.error('Error creating recipe:', error);
     }
+  };
+
+  const handleCancel = () => {
+    onClose(false);
   };
 
   const handleInputChange = (
@@ -142,15 +158,40 @@ const RecipeForm: React.FC = () => {
           </button>
         </div>
 
-        <button
-          type="button"
-          onClick={handleCreateRecipe}
-          className="new-recipe-button"
-          style={styles.submitButton}
-        >
-          Submit Recipe
-        </button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button
+            type="button"
+            onClick={handleCreateRecipe}
+            className="new-recipe-button"
+            style={styles.submitButton}
+          >
+            Submit Recipe
+          </button>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="cancel-recipe-button"
+            style={styles.cancelButton}
+          >
+            Cancel
+          </button>
+        </div>
       </form>
+      {/* Success Snackbar */}
+      <Snackbar
+        open={Boolean(successMessage)}
+        autoHideDuration={2000}
+        onClose={() => setSuccessMessage(null)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
+      >
+        <Alert
+          onClose={() => setSuccessMessage(null)}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          {successMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
@@ -219,6 +260,15 @@ const styles = {
     fontSize: '16px',
     color: 'white',
     backgroundColor: '#007bff',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+  },
+  cancelButton: {
+    padding: '10px 20px',
+    fontSize: '16px',
+    color: 'white',
+    backgroundColor: '#6c757d',
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer',

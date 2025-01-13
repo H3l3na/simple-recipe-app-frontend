@@ -1,7 +1,7 @@
 import React from 'react';
 import { Recipe } from '../../types';
 import { useMutation } from 'react-query';
-import { addToFavorites, deleteRecipe } from '../../services/recipeService';
+import { toggleFavorite, deleteRecipe } from '../../services/recipeService';
 import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -9,52 +9,38 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 interface Props {
   recipe: Recipe;
+  favoriteRecipe: boolean;
   showButton?: boolean;
+  onToggleFavorite: (recipeId: number) => void; 
 }
 
-const RecipeCard: React.FC<Props> = ({ recipe, showButton = true }) => {
+const RecipeCard: React.FC<Props> = ({
+  recipe,
+  showButton = true,
+  favoriteRecipe = false,
+  onToggleFavorite,
+}) => {
   const navigate = useNavigate();
 
   const { mutate } = useMutation(
-    (recipeId: number) => addToFavorites(1, recipeId), // Call the service method
+    (recipeId: number) => toggleFavorite(1, recipeId), //hard coded user id
     {
       onSuccess: () => {
-        console.log('Recipe added to favorites!');
-        // Handle any side effects after success (e.g., show a success message)
+        console.log('Favorite status toggled!');
+        onToggleFavorite(recipe.recipeId); 
       },
       onError: (error) => {
-        console.error('Error adding to favorites', error);
-        // Handle the error here (e.g., show an error message)
+        console.error('Error toggling favorite', error);
       },
     }
   );
 
-  const { mutate: deleteRecipeMutate } = useMutation(
-    (recipeId: number) => deleteRecipe(recipeId), // Call the delete service method
-    {
-      onSuccess: () => {
-        console.log('Recipe deleted!');
-        // Optionally navigate or update the state after successful deletion
-      },
-      onError: (error) => {
-        console.error('Error deleting recipe', error);
-        // Handle the error here
-      },
-    }
-  );
-
-  const handleAddToFavorites = () => {
-    recipe?.recipeId && mutate(recipe.recipeId); // Call the mutate function with recipeId
+  const handleToggleFavorite = () => {
+    recipe?.recipeId && mutate(recipe.recipeId);
   };
 
   const handleViewDetails = () => {
-    navigate(`/recipe/${recipe.recipeId}`); // Navigate to the recipe details page
-  };
-
-  const handleDeleteRecipe = () => {
-    if (recipe?.recipeId) {
-      deleteRecipeMutate(recipe.recipeId); // Call the mutate function to delete the recipe
-    }
+    navigate(`/recipe/${recipe.recipeId}`);
   };
 
   return (
@@ -63,10 +49,10 @@ const RecipeCard: React.FC<Props> = ({ recipe, showButton = true }) => {
         <h2>{recipe?.recipeName}</h2>
         {showButton && (
           <IconButton
-            onClick={handleAddToFavorites}
+            onClick={handleToggleFavorite}
             aria-label="favorite"
-            color="primary"
             sx={{
+              color: favoriteRecipe ? 'red' : 'primary',
               '&:hover': {
                 color: 'red',
                 transform: 'scale(1.2)',
