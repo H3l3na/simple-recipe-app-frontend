@@ -11,7 +11,7 @@ interface Props {
   recipe: Recipe;
   favoriteRecipe: boolean;
   showButton?: boolean;
-  onToggleFavorite: (recipeId: number) => void; 
+  onToggleFavorite: (recipeId: number) => void;
 }
 
 const RecipeCard: React.FC<Props> = ({
@@ -27,7 +27,7 @@ const RecipeCard: React.FC<Props> = ({
     {
       onSuccess: () => {
         console.log('Favorite status toggled!');
-        onToggleFavorite(recipe.recipeId); 
+        onToggleFavorite(recipe.recipeId);
       },
       onError: (error) => {
         console.error('Error toggling favorite', error);

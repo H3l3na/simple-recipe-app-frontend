@@ -4,10 +4,13 @@ import RecipeList from '../components/recipe/RecipeList';
 import RecipeForm from '../components/recipe/RecipeForm';
 
 const HomePage: React.FC = () => {
-  const [isCreateRecipeFormOpen, setIsCreateRecipeFormOpen] = useState<boolean>(false);
+  const [isCreateRecipeFormOpen, setIsCreateRecipeFormOpen] =
+    useState<boolean>(false);
   const [nameFilter, setNameFilter] = useState<string>(''); // Filter by name
   const [difficultyFilter, setDifficultyFilter] = useState<string>(''); // Filter by difficulty
-  const [cookingTimeFilter, setCookingTimeFilter] = useState<number | undefined>(undefined); // Filter by cooking time
+  const [cookingTimeFilter, setCookingTimeFilter] = useState<
+    number | undefined
+  >(undefined); // Filter by cooking time
   const [cuisineFilter, setCuisineFilter] = useState<string>(''); // Filter by cuisine
 
   // Handle the change in name filter
@@ -16,18 +19,24 @@ const HomePage: React.FC = () => {
   };
 
   // Handle the change in difficulty filter
-  const handleDifficultyFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleDifficultyFilterChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setDifficultyFilter(e.target.value);
   };
 
   // Handle the change in cooking time filter
-  const handleCookingTimeFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCookingTimeFilterChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const value = e.target.value;
     setCookingTimeFilter(value === '' ? undefined : parseInt(value, 10));
   };
 
   // Handle the change in cuisine filter
-  const handleCuisineFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCuisineFilterChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setCuisineFilter(e.target.value);
   };
 
@@ -81,7 +90,9 @@ const HomePage: React.FC = () => {
         </button>
       </div>
 
-      {isCreateRecipeFormOpen && <RecipeForm onClose={setIsCreateRecipeFormOpen}/>}
+      {isCreateRecipeFormOpen && (
+        <RecipeForm onClose={setIsCreateRecipeFormOpen} />
+      )}
 
       <RecipeList
         nameFilter={nameFilter}

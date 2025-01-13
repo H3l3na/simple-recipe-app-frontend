@@ -30,8 +30,8 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onClose }) => {
       setSuccessMessage('Recipe submitted successfully!');
       setTimeout(() => {
         setSuccessMessage(null);
-        onClose(false); 
-      }, 2000); 
+        onClose(false);
+      }, 2000);
     } catch (error) {
       console.error('Error creating recipe:', error);
     }
@@ -182,7 +182,7 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onClose }) => {
         open={Boolean(successMessage)}
         autoHideDuration={2000}
         onClose={() => setSuccessMessage(null)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert
           onClose={() => setSuccessMessage(null)}

@@ -17,13 +17,18 @@ const RecipeList: React.FC<RecipeListProps> = ({
   cookingTimeFilter,
   cuisineFilter,
 }) => {
-  const { data: recipes, isLoading, error } = useQuery<Recipe[]>(['recipes'], fetchAllRecipes);
-  const { data: favoriteRecipes = [], isLoading: isFavoritesLoading, error: favoritesError } = useQuery<Recipe[]>(
-    ['favoriteRecipes', 1], 
-    () => fetchMyRecipes(1)
-  );
+  const {
+    data: recipes,
+    isLoading,
+    error,
+  } = useQuery<Recipe[]>(['recipes'], fetchAllRecipes);
+  const {
+    data: favoriteRecipes = [],
+    isLoading: isFavoritesLoading,
+    error: favoritesError,
+  } = useQuery<Recipe[]>(['favoriteRecipes', 1], () => fetchMyRecipes(1));
   const [localFavorites, setLocalFavorites] = useState<Recipe[]>([]);
-  
+
   useEffect(() => {
     if (favoriteRecipes.length > 0) {
       setLocalFavorites(favoriteRecipes);
@@ -31,10 +36,11 @@ const RecipeList: React.FC<RecipeListProps> = ({
   }, [favoriteRecipes]);
 
   const handleToggleFavorite = (recipeId: number) => {
-    setLocalFavorites((prev) =>
-      prev.some((fav) => fav.recipeId === recipeId)
-        ? prev.filter((fav) => fav.recipeId !== recipeId) // Remove from favorites
-        : [...prev, recipes?.find((recipe) => recipe.recipeId === recipeId)!] // Add to favorites
+    setLocalFavorites(
+      (prev) =>
+        prev.some((fav) => fav.recipeId === recipeId)
+          ? prev.filter((fav) => fav.recipeId !== recipeId) // Remove from favorites
+          : [...prev, recipes?.find((recipe) => recipe.recipeId === recipeId)!] // Add to favorites
     );
   };
 
@@ -47,15 +53,18 @@ const RecipeList: React.FC<RecipeListProps> = ({
       ? recipe.difficultyLevel.toLowerCase() === difficultyFilter.toLowerCase()
       : true;
 
-    const matchesCookingTime = cookingTimeFilter !== undefined
-      ? recipe.cookingTime <= cookingTimeFilter
-      : true;
+    const matchesCookingTime =
+      cookingTimeFilter !== undefined
+        ? recipe.cookingTime <= cookingTimeFilter
+        : true;
 
     const matchesCuisine = cuisineFilter
       ? recipe.cuisineType?.toLowerCase().includes(cuisineFilter.toLowerCase())
       : true;
 
-    return matchesName && matchesDifficulty && matchesCookingTime && matchesCuisine;
+    return (
+      matchesName && matchesDifficulty && matchesCookingTime && matchesCuisine
+    );
   });
 
   if (isLoading) return <p>Loading...</p>;
@@ -70,11 +79,11 @@ const RecipeList: React.FC<RecipeListProps> = ({
           );
           return (
             <RecipeCard
-            key={recipe.recipeId}
-            recipe={recipe}
-            favoriteRecipe={isFavorite}
-            onToggleFavorite={handleToggleFavorite}
-          />
+              key={recipe.recipeId}
+              recipe={recipe}
+              favoriteRecipe={isFavorite}
+              onToggleFavorite={handleToggleFavorite}
+            />
           );
         })
       ) : (
