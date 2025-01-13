@@ -44,7 +44,9 @@ article {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 article:hover {
@@ -191,7 +193,7 @@ section {
 .new-recipe-button {
   padding: 12px 25px;
   font-size: 1.2rem;
-  background-color: #4CAF50; /* A pleasant green for "Create New" */
+  background-color: #4caf50; /* A pleasant green for "Create New" */
   color: white;
   border: none;
   border-radius: 5px;
@@ -295,4 +297,58 @@ section {
   font-size: 1rem;
   color: #666;
   line-height: 1.6;
+}
+
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #f8f9fa; /* Subtle background for the filter container */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.filter-container select,
+.filter-container input {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+  transition: all 0.3s ease-in-out;
+}
+
+.filter-container select:hover,
+.filter-container input:hover {
+  border-color: #007bff;
+}
+
+.filter-container select:focus,
+.filter-container input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+.new-recipe-button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.new-recipe-button:hover {
+  background-color: #0056b3;
+}
+
+.new-recipe-button:focus {
+  outline: none;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.6);
 }

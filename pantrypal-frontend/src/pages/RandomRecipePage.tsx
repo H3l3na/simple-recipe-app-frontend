@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { getRandomRecipe } from "../services/mealservice";
-import "../styles/component.css";
+import { useState } from 'react';
+import { getRandomRecipe } from '../services/mealservice';
+import '../styles/component.css';
 
 const RandomRecipe = () => {
   const [recipe, setRecipe] = useState(null);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const fetchRandomRecipe = async () => {
     try {
       const result = await getRandomRecipe();
       result && setRecipe(result?.meals[0]);
     } catch (err) {
-      setError("Failed to fetch random recipe. Please try again.");
+      setError('Failed to fetch random recipe. Please try again.');
     }
   };
 

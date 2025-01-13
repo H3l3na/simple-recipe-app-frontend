@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/themealdb.css';
-import { searchRecipes } from '../services/mealservice'; 
+import { searchRecipes } from '../services/mealservice';
 import { Recipe } from '../types';
 
 const TheMealDBPage: React.FC = () => {
@@ -10,7 +10,7 @@ const TheMealDBPage: React.FC = () => {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null); 
+    setError(null);
 
     try {
       const result = await searchRecipes(recipeName);
@@ -32,7 +32,9 @@ const TheMealDBPage: React.FC = () => {
           placeholder="Enter a recipe name"
           className="recipe-search-input"
         />
-        <button type="submit" className="recipe-search-button">Search</button>
+        <button type="submit" className="recipe-search-button">
+          Search
+        </button>
       </form>
       {error && <p className="error-message">{error}</p>}
       <section className="recipe-results">

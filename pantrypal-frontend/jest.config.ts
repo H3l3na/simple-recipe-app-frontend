@@ -13,9 +13,10 @@ const config: Config.InitialOptions = {
     '\\.(css|scss)$': 'identity-obj-proxy', // Mock CSS/SCSS imports
   },
   testMatch: ['**/__tests__/**/*.(spec|test).ts?(x)'], // Match test files
-}; module.exports = {
-  testEnvironment: "jsdom",
+};
+module.exports = {
+  testEnvironment: 'jsdom',
 };
 
 export default config;
-export { }; // This makes the file a module
+export {}; // This makes the file a module

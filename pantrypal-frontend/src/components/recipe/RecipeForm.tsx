@@ -25,7 +25,9 @@ const RecipeForm: React.FC = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setNewRecipeData((prevState) => ({
       ...prevState,
@@ -33,7 +35,9 @@ const RecipeForm: React.FC = () => {
     }));
   };
 
-  const handleIngredientInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleIngredientInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, value } = e.target;
     setNewIngredient((prevState) => ({
       ...prevState,
@@ -129,7 +133,11 @@ const RecipeForm: React.FC = () => {
             onChange={handleIngredientInputChange}
             style={styles.input}
           />
-          <button type="button" onClick={handleAddIngredient} style={styles.addButton}>
+          <button
+            type="button"
+            onClick={handleAddIngredient}
+            style={styles.addButton}
+          >
             Add Ingredient
           </button>
         </div>
