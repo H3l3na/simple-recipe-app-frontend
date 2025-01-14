@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/component.css';
 import RecipeList from '../components/recipe/RecipeList';
 import RecipeForm from '../components/recipe/RecipeForm';
+import { Recipe } from '../types';
 
 const HomePage: React.FC = () => {
   const [isCreateRecipeFormOpen, setIsCreateRecipeFormOpen] =

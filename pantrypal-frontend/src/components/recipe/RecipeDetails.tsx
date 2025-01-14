@@ -57,6 +57,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = () => {
       />
       <div className="recipe-header">
         <p className="recipe-time">Prep time: {recipe.cookingTime} min</p>
+        <p className="recipe-cuisine">Cuisine type: {recipe.cuisineType}</p>
         <p className="recipe-difficulty">
           Difficulty level: {recipe.difficultyLevel}
         </p>

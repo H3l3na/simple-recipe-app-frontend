@@ -26,7 +26,6 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onClose }) => {
   const handleCreateRecipe = async () => {
     try {
       const createdRecipe = await createRecipe(newRecipeData);
-      console.log('Recipe created:', createdRecipe);
       setSuccessMessage('Recipe submitted successfully!');
       setTimeout(() => {
         setSuccessMessage(null);
@@ -95,6 +94,14 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onClose }) => {
           name="difficultyLevel"
           placeholder="Difficulty Level"
           value={newRecipeData.difficultyLevel}
+          onChange={handleInputChange}
+          style={styles.input}
+        />
+        <input
+          type="text"
+          name="cuisineType"
+          placeholder="Cuisine Type"
+          value={newRecipeData.cuisineType}
           onChange={handleInputChange}
           style={styles.input}
         />

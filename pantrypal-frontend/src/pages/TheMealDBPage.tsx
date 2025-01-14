@@ -15,10 +15,28 @@ const TheMealDBPage: React.FC = () => {
     try {
       const result = await searchRecipes(recipeName);
       setRecipes(result.meals);
-      console.log('RESULT: ', result);
     } catch (err) {
       setError('Error fetching recipes. Please try again.');
     }
+  };
+
+  const getIngredients = (recipe: Recipe) => {
+    if (!recipe) return [];
+    const ingredients = [];
+    for (let i = 1; i <= 20; i++) {
+      /* restrict ingredient size to max 20 */
+      const ingredient = recipe[`strIngredient${i}`];
+      const measure = recipe[`strMeasure${i}`];
+      if (
+        ingredient &&
+        ingredient.trim() !== '' &&
+        measure &&
+        measure.trim() !== ''
+      ) {
+        ingredients.push({ ingredient, measure });
+      }
+    }
+    return ingredients;
   };
 
   return (
@@ -42,18 +60,22 @@ const TheMealDBPage: React.FC = () => {
           recipes.map((recipe, index) => (
             <div key={index} className="recipe-card">
               <h2>{recipe.strMeal}</h2>
-              <p className="recipe-instructions">{recipe.strInstructions}</p>
-              <ul className="recipe-ingredients">
-                {Object.keys(recipe)
-                  .filter(
-                    (key) =>
-                      key.startsWith('strIngredient') &&
-                      recipe[key as keyof Recipe]
-                  )
-                  .map((key, idx) => (
-                    <li key={idx}>{recipe[key as keyof Recipe]}</li>
+              <div className="ingredients-container">
+                <h3 className="ingredients-title">Ingredients</h3>
+                <ul className="ingredients-list">
+                  {getIngredients(recipe).map((item, index) => (
+                    <li key={index} className="ingredient-item">
+                      <span className="ingredient-name">{item.ingredient}</span>
+                      :
+                      <span className="ingredient-measure">
+                        {' '}
+                        {item.measure}
+                      </span>
+                    </li>
                   ))}
-              </ul>
+                </ul>
+              </div>
+              <p className="recipe-instructions">{recipe.strInstructions}</p>
             </div>
           ))
         ) : (

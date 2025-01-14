@@ -1,6 +1,6 @@
 import React from 'react';
 import { Recipe } from '../../types';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { toggleFavorite, deleteRecipe } from '../../services/recipeService';
 import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
@@ -12,6 +12,7 @@ interface Props {
   favoriteRecipe: boolean;
   showButton?: boolean;
   onToggleFavorite: (recipeId: number) => void;
+  onDelete?: (recipeId: number) => void;
 }
 
 const RecipeCard: React.FC<Props> = ({
@@ -19,8 +20,10 @@ const RecipeCard: React.FC<Props> = ({
   showButton = true,
   favoriteRecipe = false,
   onToggleFavorite,
+  onDelete,
 }) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { mutate } = useMutation(
     (recipeId: number) => toggleFavorite(1, recipeId), //hard coded user id
@@ -35,12 +38,32 @@ const RecipeCard: React.FC<Props> = ({
     }
   );
 
+  const { mutate: deleteRecipeMutate } = useMutation(
+    (recipeId: number) => deleteRecipe(recipeId),
+    {
+      onSuccess: () => {
+        console.log('Recipe deleted!');
+        queryClient.invalidateQueries('recipes');
+        onDelete && onDelete(recipe.recipeId);
+      },
+      onError: (error) => {
+        console.error('Error deleting recipe', error);
+      },
+    }
+  );
+
   const handleToggleFavorite = () => {
     recipe?.recipeId && mutate(recipe.recipeId);
   };
 
   const handleViewDetails = () => {
     navigate(`/recipe/${recipe.recipeId}`);
+  };
+
+  const handleDeleteRecipe = () => {
+    if (recipe?.recipeId) {
+      deleteRecipeMutate(recipe.recipeId);
+    }
   };
 
   return (
@@ -72,6 +95,13 @@ const RecipeCard: React.FC<Props> = ({
       <div>
         <button onClick={handleViewDetails}>View Details</button>
       </div>
+      <IconButton
+        onClick={handleDeleteRecipe}
+        aria-label="delete"
+        color="error"
+      >
+        <DeleteIcon />
+      </IconButton>
     </article>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
+import { Snackbar, Alert } from '@mui/material';
 import { fetchAllRecipes, fetchMyRecipes } from '../../services/recipeService';
 import RecipeCard from './RecipeCard';
 import { Recipe } from '../../types';
@@ -28,12 +29,19 @@ const RecipeList: React.FC<RecipeListProps> = ({
     error: favoritesError,
   } = useQuery<Recipe[]>(['favoriteRecipes', 1], () => fetchMyRecipes(1));
   const [localFavorites, setLocalFavorites] = useState<Recipe[]>([]);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
     if (favoriteRecipes.length > 0) {
       setLocalFavorites(favoriteRecipes);
     }
   }, [favoriteRecipes]);
+
+  const handleRecipeDeletion = (recipeId: number) => {
+    setSnackbarMessage('Recipe deleted successfully!');
+    setOpenSnackbar(true);
+  };
 
   const handleToggleFavorite = (recipeId: number) => {
     setLocalFavorites(
@@ -74,21 +82,34 @@ const RecipeList: React.FC<RecipeListProps> = ({
     <section>
       {filteredRecipes && filteredRecipes.length > 0 ? (
         filteredRecipes.map((recipe: Recipe) => {
-          const isFavorite = localFavorites.some(
-            (favRecipe) => favRecipe.recipeId === recipe.recipeId
-          );
+          const isFavorite =
+            Array.isArray(localFavorites) &&
+            localFavorites.some(
+              (favRecipe) => favRecipe.recipeId === recipe.recipeId
+            );
           return (
             <RecipeCard
               key={recipe.recipeId}
               recipe={recipe}
               favoriteRecipe={isFavorite}
               onToggleFavorite={handleToggleFavorite}
+              onDelete={handleRecipeDeletion}
             />
           );
         })
       ) : (
         <p>No recipes match your filters.</p>
       )}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert severity="success" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </section>
   );
 };

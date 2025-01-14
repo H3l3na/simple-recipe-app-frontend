@@ -22,7 +22,8 @@
 }
 
 .recipe-time,
-.recipe-difficulty {
+.recipe-difficulty,
+.recipe-cuisine {
   font-size: 1.1em;
   color: #555;
 }
