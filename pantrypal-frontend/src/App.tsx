@@ -18,7 +18,7 @@ const App: React.FC = () => (
       <Route path="/favorites" element={<FavoriteRecipesPage />} />
       <Route path="/random" element={<RandomRecipePage />} />
       <Route path="/themealdb" element={<TheMealDBPage />} />
-      <Route path="/recipe/:recipeId" element={<RecipeDetails />} /> 
+      <Route path="/recipe/:recipeId" element={<RecipeDetails />} />
     </Routes>
     <Footer />
   </Router>
