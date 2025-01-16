@@ -14,6 +14,7 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onClose }) => {
     difficultyLevel: '',
     preparationSteps: '',
     ingredients: [],
+    numberOfServings: 0,
   });
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -66,7 +67,7 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onClose }) => {
         ...prevState,
         ingredients: [...prevState.ingredients, newIngredient],
       }));
-      setNewIngredient({ name: '', quantity: '' }); // Reset ingredient input
+      setNewIngredient({ name: '', quantity: '', numberOfCalories: 0 }); // Reset ingredient input
     }
   };
 
@@ -107,6 +108,14 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onClose }) => {
         />
         <input
           type="number"
+          name="numberOfServings"
+          placeholder="Number of Servings"
+          value={newRecipeData.numberOfServings}
+          onChange={handleInputChange}
+          style={styles.input}
+        />
+        <input
+          type="number"
           name="cookingTime"
           placeholder="Cooking Time (min)"
           value={newRecipeData.cookingTime}
@@ -126,7 +135,8 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onClose }) => {
           {newRecipeData.ingredients.map((ingredient, index) => (
             <div key={index} style={styles.ingredientItem}>
               <span>
-                {ingredient.name} - {ingredient.quantity}
+                {ingredient.name} - {ingredient.quantity} -{' '}
+                {ingredient.numberOfCalories}
               </span>
               <button
                 type="button"
@@ -154,7 +164,15 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onClose }) => {
             placeholder="Quantity"
             value={newIngredient.quantity}
             onChange={handleIngredientInputChange}
-            style={styles.input}
+            style={styles.input2}
+          />
+          <input
+            type="text"
+            name="numberOfCalories"
+            placeholder="Number of calories"
+            value={newIngredient.numberOfCalories}
+            onChange={handleIngredientInputChange}
+            style={styles.input3}
           />
           <button
             type="button"

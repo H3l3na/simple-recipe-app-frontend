@@ -2,6 +2,7 @@ export interface Ingredient {
   ingredientId?: number;
   name: string;
   quantity: string;
+  numberOfCalories: number;
 }
 
 export interface Recipe {
@@ -14,4 +15,6 @@ export interface Recipe {
   ingredients: Ingredient[];
   averageRating: number;
   numberOfRatings: number;
+  numberOfServings: number;
+  caloriesPerServing: number;
 }

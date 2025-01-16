@@ -92,6 +92,8 @@ const RecipeCard: React.FC<Props> = ({
       </div>
       <p>{'Prep time: ' + recipe?.cookingTime + ' min'}</p>
       <p>{'Difficulty level: ' + recipe?.difficultyLevel}</p>
+      <p>{'Calories per serving: ' + recipe?.caloriesPerServing}</p>
+      <p>{'Number of servings: ' + recipe?.numberOfServings}</p>
       <div>
         <button onClick={handleViewDetails}>View Details</button>
       </div>

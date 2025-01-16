@@ -62,6 +62,12 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = () => {
           Difficulty level: {recipe.difficultyLevel}
         </p>
       </div>
+      <p className="recipe-cuisine">
+        Number of servings: {recipe.numberOfServings}
+      </p>
+      <p className="recipe-cuisine">
+        Calories per serving: {recipe.caloriesPerServing}
+      </p>
       <div className="ingredients-section">
         <h2>Ingredients</h2>
         <ul className="ingredient-list">
