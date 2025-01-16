@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
+import { Snackbar, Alert } from '@mui/material';
 import { Recipe, Ingredient } from '../../types';
 import { createRecipe } from '../../services/recipeService';
 
-const RecipeForm: React.FC = () => {
+interface RecipeFormProps {
+  onClose: (open: boolean) => void;
+}
+
+const RecipeForm: React.FC<RecipeFormProps> = ({ onClose }) => {
   const [newRecipeData, setNewRecipeData] = useState<Recipe>({
     recipeName: '',
     cookingTime: '0',
     difficultyLevel: '',
     preparationSteps: '',
     ingredients: [],
+    numberOfServings: 0,
   });
+
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const [newIngredient, setNewIngredient] = useState<Ingredient>({
     name: '',
@@ -19,13 +27,23 @@ const RecipeForm: React.FC = () => {
   const handleCreateRecipe = async () => {
     try {
       const createdRecipe = await createRecipe(newRecipeData);
-      console.log('Recipe created:', createdRecipe);
+      setSuccessMessage('Recipe submitted successfully!');
+      setTimeout(() => {
+        setSuccessMessage(null);
+        onClose(false);
+      }, 2000);
     } catch (error) {
       console.error('Error creating recipe:', error);
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleCancel = () => {
+    onClose(false);
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setNewRecipeData((prevState) => ({
       ...prevState,
@@ -33,7 +51,9 @@ const RecipeForm: React.FC = () => {
     }));
   };
 
-  const handleIngredientInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleIngredientInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, value } = e.target;
     setNewIngredient((prevState) => ({
       ...prevState,
@@ -47,7 +67,7 @@ const RecipeForm: React.FC = () => {
         ...prevState,
         ingredients: [...prevState.ingredients, newIngredient],
       }));
-      setNewIngredient({ name: '', quantity: '' }); // Reset ingredient input
+      setNewIngredient({ name: '', quantity: '', numberOfCalories: 0 }); // Reset ingredient input
     }
   };
 
@@ -79,6 +99,22 @@ const RecipeForm: React.FC = () => {
           style={styles.input}
         />
         <input
+          type="text"
+          name="cuisineType"
+          placeholder="Cuisine Type"
+          value={newRecipeData.cuisineType}
+          onChange={handleInputChange}
+          style={styles.input}
+        />
+        <input
+          type="number"
+          name="numberOfServings"
+          placeholder="Number of Servings"
+          value={newRecipeData.numberOfServings}
+          onChange={handleInputChange}
+          style={styles.input}
+        />
+        <input
           type="number"
           name="cookingTime"
           placeholder="Cooking Time (min)"
@@ -99,7 +135,8 @@ const RecipeForm: React.FC = () => {
           {newRecipeData.ingredients.map((ingredient, index) => (
             <div key={index} style={styles.ingredientItem}>
               <span>
-                {ingredient.name} - {ingredient.quantity}
+                {ingredient.name} - {ingredient.quantity} -{' '}
+                {ingredient.numberOfCalories}
               </span>
               <button
                 type="button"
@@ -127,22 +164,59 @@ const RecipeForm: React.FC = () => {
             placeholder="Quantity"
             value={newIngredient.quantity}
             onChange={handleIngredientInputChange}
-            style={styles.input}
+            style={styles.input2}
           />
-          <button type="button" onClick={handleAddIngredient} style={styles.addButton}>
+          <input
+            type="text"
+            name="numberOfCalories"
+            placeholder="Number of calories"
+            value={newIngredient.numberOfCalories}
+            onChange={handleIngredientInputChange}
+            style={styles.input3}
+          />
+          <button
+            type="button"
+            onClick={handleAddIngredient}
+            style={styles.addButton}
+          >
             Add Ingredient
           </button>
         </div>
 
-        <button
-          type="button"
-          onClick={handleCreateRecipe}
-          className="new-recipe-button"
-          style={styles.submitButton}
-        >
-          Submit Recipe
-        </button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button
+            type="button"
+            onClick={handleCreateRecipe}
+            className="new-recipe-button"
+            style={styles.submitButton}
+          >
+            Submit Recipe
+          </button>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="cancel-recipe-button"
+            style={styles.cancelButton}
+          >
+            Cancel
+          </button>
+        </div>
       </form>
+      {/* Success Snackbar */}
+      <Snackbar
+        open={Boolean(successMessage)}
+        autoHideDuration={2000}
+        onClose={() => setSuccessMessage(null)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setSuccessMessage(null)}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          {successMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
@@ -211,6 +285,15 @@ const styles = {
     fontSize: '16px',
     color: 'white',
     backgroundColor: '#007bff',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+  },
+  cancelButton: {
+    padding: '10px 20px',
+    fontSize: '16px',
+    color: 'white',
+    backgroundColor: '#6c757d',
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer',
