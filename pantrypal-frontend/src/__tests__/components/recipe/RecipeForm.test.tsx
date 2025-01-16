@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import RecipeForm from '../../../components/recipe/RecipeForm'; 
+import RecipeForm from '../../../components/recipe/RecipeForm';
 import '@testing-library/jest-dom';
 import * as recipeService from '../../../services/recipeService';
 
@@ -17,8 +17,12 @@ describe('RecipeForm Component', () => {
 
     expect(screen.getByPlaceholderText('Recipe Name')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Difficulty Level')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Cooking Time (min)')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Preparation Steps')).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText('Cooking Time (min)')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText('Preparation Steps')
+    ).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Ingredient Name')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Quantity')).toBeInTheDocument();
   });
@@ -111,7 +115,9 @@ describe('RecipeForm Component', () => {
       target: { value: 'Easy' },
     });
 
-    recipeService.createRecipe.mockRejectedValue(new Error('Failed to create recipe'));
+    recipeService.createRecipe.mockRejectedValue(
+      new Error('Failed to create recipe')
+    );
 
     fireEvent.click(screen.getByText('Submit Recipe'));
 

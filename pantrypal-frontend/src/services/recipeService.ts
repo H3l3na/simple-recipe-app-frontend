@@ -7,8 +7,8 @@ export const fetchAllRecipes = async (): Promise<Recipe[]> => {
 };
 
 export const fetchMyRecipes = async (userId: number): Promise<Recipe[]> => {
-    const response = await api.get(`/recipes/favorite/${userId}`);
-    return response.data;
+  const response = await api.get(`/recipes/favorite/${userId}`);
+  return response.data;
 };
 
 export const createRecipe = async (recipe: Recipe): Promise<Recipe> => {
@@ -21,12 +21,23 @@ export const getRecipeById = async (id: number): Promise<Recipe> => {
   return response.data;
 };
 
-export const addToFavorites = async (userId: number, recipeId: number): Promise<void> => {
-    const response = await api.post(`/users/${userId}/favorite`, { recipeId });
-    return response.data;  
-  };
+export const addToFavorites = async (
+  userId: number,
+  recipeId: number
+): Promise<void> => {
+  const response = await api.post(`/users/${userId}/favorite`, { recipeId });
+  return response.data;
+};
 
 export const deleteRecipe = async (recipeId: number): Promise<void> => {
-    const response = await api.delete(`/recipes/${recipeId}`);
-    return response.data;
-  };
+  const response = await api.delete(`/recipes/${recipeId}`);
+  return response.data;
+};
+
+export const toggleFavorite = async (
+  userId: number,
+  recipeId: number
+): Promise<void> => {
+  const response = await api.post(`/users/${userId}/favorite`, { recipeId });
+  return response.data;
+};
